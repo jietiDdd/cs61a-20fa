@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta name="description" content="CS 61A: Structure and Interpretation of Computer Programs" />
+  <meta name="keywords" content="CS 61A, Computer Science, CS, 61A, Programming, John DeNero, Berkeley, EECS" />
+  <meta name="author" content="Hany Farid, John DeNero" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="../../assets/js/hl.js"></script>
+  <script>
+    // we aren't registering builtins since
+    //      (1) they don't render differently in the current CSS from other names
+    //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+    // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+    hljsRegister({
+      'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+  <script src="../../assets/js/dark-mode.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/mono-blue.css">
+  <link rel="icon" href="../../assets/images/favicon.ico">
+
+
+
+  <link rel="stylesheet" type="text/css" href="../../assets/css/hw.css">
+
+
+  <title>
+    Homework 4 | CS 61A Fall 2020
+  </title>
+</head>
+
+<body id="index" class="home">
+  <nav class="navbar navbar-default navbar-static-top">
+    <div class="container noselect">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#navbar-collapse-section">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../">
+          <img style="max-width:60px; margin-top: -20px;" class="logo" src="../../assets/images/logo.png" />
+        </a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbar-collapse-section">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Staff
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a href="../../instructor.html">Instructors</a></li>
+              <li><a href="../../TAs.html">TAs</a></li>
+              <li><a href="../../tutors.html">Tutors</a></li>
+            </ul>
+          </li>
+          <li><a href="../../resources.html">Resources</a></li>
+          <li><a href="../../articles/about.html">Syllabus</a></li>
+          <li><a href="https://code.cs61a.org">Code</a></li>
+          <li><a href="http://tutor.cs61a.org" target="_blank">Tutor</a></li>
+          <li>
+            <a style="color:white; font-size: 15px;vertical-align: middle" href="https://github.com/ChillyHigh/CS61A-CN"
+              title="前往仓库" target="_blank">
+              <img height="21px" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub"
+                style="filter: invert(1) brightness(1000%);">
+              <span style="vertical-align: middle;padding-left: 0.5rem;"> CS61A-CN</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="content" class="container">
+
+    <div class='row'>
+      <div class='col-md-9'>
+        <header>
+          <h1>
+
+            作业4: 非局部, 迭代器
+            <br>
+            <small>
+              Homework 4: Nonlocal, Iterators
+            </small>
+
+            <br>
+            <ul class="inline-block list-inline">
+              <li><a href="hw04.zip" class="label label-outline">hw04.zip</a></li>
+            </ul>
+
+
+          </h1>
+        </header>
+
+
+        <p><em>Due by 11:59pm on Thursday, October 15</em></p>
+
+
+        <h3><a href="EN.html">查看英文原文</a></h3>
+
+        <h2>说明</h2>
+
+        <p>下载 <a href="hw04.zip">hw04.zip</a>。在压缩包中，你会找到一个名为 <a href="hw04.py">hw04.py</a> 的文件，以及一份 <code>ok</code>
+          自动评分器。</p>
+
+        <p><strong>提交：</strong>完成后使用<code>python3 ok
+              --submit</code>来提交代码。你可以在截止日期前多次提交；只有最后一次提交会被评分。请检查你是否成功提交了代码到<a
+            href="https://okpy.org/">okpy.org</a>。更多提交作业的说明请参见<a
+            href="../../lab/lab00#submitting-the-assignment">Lab0</a>。</p>
+        <p><strong>使用Ok:</strong>如果你对使用Ok有任何疑问，请参考<a href="../../articles/using-ok.html">本指南</a>。</p>
+
+        <p><strong>阅读材料：</strong>以下阅读材料可能对你有帮助</p>
+        <ul>
+          <li><a href="https://composingprograms.netlify.app/2/4">Section 2.4</a></li>
+          <li><a href="https://composingprograms.netlify.app/4/2">Section 4.2</a></li>
+        </ul>
+
+
+        <p><strong>评分：</strong>作业评分基于正确性。每个错误的问题将使总分减少一分。课程大纲中有作业恢复政策。
+          <strong>本次作业满分为2分。</strong>
+        </p>
+
+
+
+        <h1 id="required-questions">必答题</h1>
+
+
+
+        <button id='toggle-1' class='btn btn-outline btn-lg alwaystoggle toggle'>
+          提示视频<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-1">
+
+          <h3 id="hint-video">提示视频</h3>
+
+          <p>观看此视频来获取一些解决本作业问题的提示。
+            <br>
+            <iframe width="560" height="315"
+              src="//player.bilibili.com/player.html?isOutside=true&aid=427281261&bvid=BV1s3411G7yM&cid=760053089&p=44&autoplay=0"
+              scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        </p>
+
+
+        <h2 id="nonlocal">非局部 (Nonlocal)</h2>
+
+
+        <h3 class="question" id="q1">Q1: 创建银行</h3>
+
+        <p>在讲座中，我们学习了如何使用函数来创建可变对象。例如，下面的函数
+          <code>make_withdraw</code>，可以生成一个从账户中取款的函数：
+        </p>
+
+        <pre><code>def make_withdraw(balance):
+    &quot;&quot;&quot;Return a withdraw function with BALANCE as its starting balance.
+    &gt;&gt;&gt; withdraw = make_withdraw(1000)
+    &gt;&gt;&gt; withdraw(100)
+    900
+    &gt;&gt;&gt; withdraw(100)
+    800
+    &gt;&gt;&gt; withdraw(900)
+    &#x27;Insufficient funds&#x27;
+    &quot;&quot;&quot;
+    def withdraw(amount):
+        nonlocal balance
+        if amount &gt; balance:
+            return &#x27;Insufficient funds&#x27;
+        balance = balance &#x2d; amount
+        return balance
+    return withdraw</code></pre>
+
+        <p>编写一个新的函数 <code>make_bank</code>，它可以创建一个初始余额为 <code>balance</code>
+          的银行账户，并返回另一个函数。这个新函数能够进行取款和存款操作。新函数接受两个参数：<code>message</code> 和 <code>amount</code>。当传入的 message 是
+          <code>&#x27;deposit&#x27;</code> 时，银行会将 <code>amount</code> 存入账户。当传入的 message 是
+          <code>&#x27;withdraw&#x27;</code>
+          时，银行会尝试从账户中取出 <code>amount</code>。如果账户中没有足够的资金进行取款，函数将返回字符串 <code>&#x27;Insufficient funds&#x27;</code>。如果传入的
+          <code>message</code> 不是这两个命令之一，函数应返回 <code>&#x27;Invalid message&#x27;</code>。示例可以在 doctests 中查看。
+        </p>
+
+        <solution>
+
+          <pre><code>def make_bank(balance):
+    &quot;&quot;&quot;Returns a bank function with a starting balance. Supports
+    withdrawals and deposits.
+
+    &gt;&gt;&gt; bank = make_bank(100)
+    &gt;&gt;&gt; bank(&#x27;withdraw&#x27;, 40)    # 100 &#x2d; 40
+    60
+    &gt;&gt;&gt; bank(&#x27;hello&#x27;, 500)      # Invalid message passed in
+    &#x27;Invalid message&#x27;
+    &gt;&gt;&gt; bank(&#x27;deposit&#x27;, 20)     # 60 + 20
+    80
+    &gt;&gt;&gt; bank(&#x27;withdraw&#x27;, 90)    # 80 &#x2d; 90; not enough money
+    &#x27;Insufficient funds&#x27;
+    &gt;&gt;&gt; bank(&#x27;deposit&#x27;, 100)    # 80 + 100
+    180
+    &gt;&gt;&gt; bank(&#x27;goodbye&#x27;, 0)      # Invalid message passed in
+    &#x27;Invalid message&#x27;
+    &gt;&gt;&gt; bank(&#x27;withdraw&#x27;, 60)    # 180 &#x2d; 60
+    120
+    &quot;&quot;&quot;
+    def bank(message, amount):
+        "*** YOUR CODE HERE ***"
+    return bank</code></pre>
+
+        </solution>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q make_bank --local</code></pre>
+
+        <h3 class="question" id="q2">Q2: 密码保护</h3>
+
+        <p>编写一个基于上一题中 <code>make_withdraw</code> 函数的新版本，该版本返回受密码保护的取款函数。也就是说，<code>make_withdraw</code>
+          除了接受初始余额外，还应接受一个密码参数（字符串）。返回的函数应接受两个参数：取款金额和密码。</p>
+
+        <p>受密码保护的 <code>withdraw</code> 函数应仅在密码正确时进行取款操作。当收到错误密码时，函数应：</p>
+
+        <ol>
+          <li>将该错误密码存储在一个列表中，并且</li>
+          <li>返回字符串 <code>'Incorrect password'</code>。</li>
+        </ol>
+
+        <p>如果取款函数被调用了三次并提供了错误的密码 <code>&lt;p1&gt;</code>、<code>&lt;p2&gt;</code> 和
+          <code>&lt;p3&gt;</code>，则该账户将被冻结。之后所有对该函数的调用都应返回：
+        </p>
+
+        <pre><code>&quot;Frozen account. Attempts: [&lt;p1&gt;, &lt;p2&gt;, &lt;p3&gt;]&quot;</code></pre>
+
+        <blockquote>
+          <p><em>提示：</em> 你可以使用 <code>str</code> 函数将列表转换为字符串。例如，对于列表 <code>s = [1, 2, 3]</code>，表达式
+            <code>&quot;The list s is: &quot; + str(s)</code> 会转换为 <code>&quot;The list s is: [1, 2, 3]&quot;</code>。
+          </p>
+        </blockquote>
+
+        <p>错误的密码可以相同或不同：</p>
+
+        <solution>
+
+          <pre><code>def make_withdraw(balance, password):
+    &quot;&quot;&quot;Return a password&#x2d;protected withdraw function.
+
+    &gt;&gt;&gt; w = make_withdraw(100, &#x27;hax0r&#x27;)
+    &gt;&gt;&gt; w(25, &#x27;hax0r&#x27;)
+    75
+    &gt;&gt;&gt; error = w(90, &#x27;hax0r&#x27;)
+    &gt;&gt;&gt; error
+    &#x27;Insufficient funds&#x27;
+    &gt;&gt;&gt; error = w(25, &#x27;hwat&#x27;)
+    &gt;&gt;&gt; error
+    &#x27;Incorrect password&#x27;
+    &gt;&gt;&gt; new_bal = w(25, &#x27;hax0r&#x27;)
+    &gt;&gt;&gt; new_bal
+    50
+    &gt;&gt;&gt; w(75, &#x27;a&#x27;)
+    &#x27;Incorrect password&#x27;
+    &gt;&gt;&gt; w(10, &#x27;hax0r&#x27;)
+    40
+    &gt;&gt;&gt; w(20, &#x27;n00b&#x27;)
+    &#x27;Incorrect password&#x27;
+    &gt;&gt;&gt; w(10, &#x27;hax0r&#x27;)
+    &quot;Frozen account. Attempts: [&#x27;hwat&#x27;, &#x27;a&#x27;, &#x27;n00b&#x27;]&quot;
+    &gt;&gt;&gt; w(10, &#x27;l33t&#x27;)
+    &quot;Frozen account. Attempts: [&#x27;hwat&#x27;, &#x27;a&#x27;, &#x27;n00b&#x27;]&quot;
+    &gt;&gt;&gt; type(w(10, &#x27;l33t&#x27;)) == str
+    True
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+        </solution>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q make_withdraw --local</code></pre>
+
+
+
+
+        <h2 id="iterators-and-generators">迭代器和生成器</h2>
+
+        <h3 class="question" id="q3">Q3: 重复值</h3>
+
+        <p>实现一个函数（不是生成器函数），该函数返回迭代器 <code>t</code> 中第一个连续出现 <code>k</code> 次的值。正如讲座中提到的，迭代器可以通过 <code>next(t)</code> 函数或
+          for 循环来获取值。测试数据保证在迭代完成前有符合条件的结果。如果你遇到迭代器已完成并报错的情况，说明程序未能正确识别目标值。遍历这些项时，如果同一个迭代器被传入
+          <code>repeated</code> 函数两次，第二次调用应从第一次调用结束的位置继续。doctests 中有该行为的一个示例。
+        </p>
+
+        <solution>
+
+          <pre><code>def repeated(t, k):
+    &quot;&quot;&quot;Return the first value in iterator T that appears K times in a row. Iterate through the items such that
+    if the same iterator is passed into repeated twice, it continues in the second call at the point it left off
+    in the first.
+
+    &gt;&gt;&gt; s = iter([10, 9, 10, 9, 9, 10, 8, 8, 8, 7])
+    &gt;&gt;&gt; repeated(s, 2)
+    9
+    &gt;&gt;&gt; s2 = iter([10, 9, 10, 9, 9, 10, 8, 8, 8, 7])
+    &gt;&gt;&gt; repeated(s2, 3)
+    8
+    &gt;&gt;&gt; s = iter([3, 2, 2, 2, 1, 2, 1, 4, 4, 5, 5, 5])
+    &gt;&gt;&gt; repeated(s, 3)
+    2
+    &gt;&gt;&gt; repeated(s, 3)
+    5
+    &gt;&gt;&gt; s2 = iter([4, 1, 6, 6, 7, 7, 8, 8, 2, 2, 2, 5])
+    &gt;&gt;&gt; repeated(s2, 3)
+    2
+    &quot;&quot;&quot;
+    assert k &gt; 1
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+        </solution>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q repeated --local</code></pre>
+
+        <h3 class="question" id="q4">Q4: 生成排列</h3>
+
+        <p>给定一个由互异元素组成的序列，序列的<em>排列</em>是指将序列中的元素以任意顺序排成一列组成的列表。例如，<code>[2, 1, 3]</code>、<code>[1, 3, 2]</code> 和
+          <code>[3, 2, 1]</code> 都是序列 <code>[1, 2, 3]</code> 的一些排列。
+        </p>
+
+        <p>实现 <code>permutations</code> 函数，这是一个生成器函数，它接受一个序列 <code>seq</code> 并返回一个生成器，该生成器会通过yield返回 <code>seq</code>
+          的所有排列。
+        </p>
+
+        <p>排列可以按任何顺序生成。请注意，doctests 测试的是你是否生成了所有可能的排列，而不用考虑特定的顺序。内置的 <code>sorted</code>
+          函数接受一个可迭代对象，并返回一个包含该可迭代对象中元素的非递减顺序列表。</p>
+
+        <blockquote>
+          <p><em>提示：</em> 如果你已经有了不包含第一个元素的 <code>seq</code> 的所有排列，你如何利用这些排列来生成 <code>seq</code> 所有的排列？</p>
+
+          <p><em>提示：</em> 如果你遇到困难，可以观看本问题的提示视频，了解如何解决这个问题。</p>
+        </blockquote>
+
+        <solution>
+
+          <pre><code>def permutations(seq):
+    &quot;&quot;&quot;Generates all permutations of the given sequence. Each permutation is a
+    list of the elements in SEQ in a different order. The permutations may be
+    yielded in any order.
+
+    &gt;&gt;&gt; perms = permutations([100])
+    &gt;&gt;&gt; type(perms)
+    &lt;class &#x27;generator&#x27;&gt;
+    &gt;&gt;&gt; next(perms)
+    [100]
+    &gt;&gt;&gt; try: #this piece of code prints &quot;No more permutations!&quot; if calling next would cause an error
+    ...     next(perms)
+    ... except StopIteration:
+    ...     print(&#x27;No more permutations!&#x27;)
+    No more permutations!
+    &gt;&gt;&gt; sorted(permutations([1, 2, 3])) # Returns a sorted list containing elements of the generator
+    [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+    &gt;&gt;&gt; sorted(permutations((10, 20, 30)))
+    [[10, 20, 30], [10, 30, 20], [20, 10, 30], [20, 30, 10], [30, 10, 20], [30, 20, 10]]
+    &gt;&gt;&gt; sorted(permutations(&quot;ab&quot;))
+    [[&#x27;a&#x27;, &#x27;b&#x27;], [&#x27;b&#x27;, &#x27;a&#x27;]]
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+        </solution>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q permutations --local</code></pre>
+
+
+        <h2 id="submit">Submit</h2>
+
+
+        <p>Make sure to submit this assignment by running:</p>
+
+        <pre><code>python3 ok &#x2d;&#x2d;submit</code></pre>
+
+
+        <h1 id="extra-questions">附加题</h1>
+
+
+        <h3 class="question" id="q5">Q5: 联合账户</h3>
+
+        <p>假设我们的银行系统需要支持创建联合账户。定义一个函数 <code>make_joint</code>，它接受三个参数：</p>
+
+        <ol>
+          <li>一个受密码保护的 <code>withdraw</code> 函数，</li>
+          <li>定义该 <code>withdraw</code> 函数时使用的原始密码，</li>
+          <li>一个也可以访问原始账户的新密码。</li>
+        </ol>
+
+        <p>如果密码错误或由于底层账户被锁定而无法验证，<code>make_joint</code> 应错误。否则，它返回一个 <code>withdraw</code>
+          函数，该函数可以使用<em>新密码或旧密码</em>提供对原始账户的额外访问。这两个函数从同一余额中取款。提供给任一函数的不正确密码将被存储，并在三次错误尝试后导致函数被锁定。</p>
+
+        <p><em>提示</em>：解决方案很短（少于 10 行），并且不包含任何字符串字面量（直接写的字符串）！关键是用正确的密码和金额调用
+          <code>withdraw</code>，然后解析返回结果。你可以假设所有取款失败的情况（如密码错误、账户被锁定或余额不足）都会返回一个字符串，而成功的取款操作将返回一个数字。
+        </p>
+
+        <p>使用 <code>type(value) == str</code> 来测试某个 <code>value</code> 是否为字符串：</p>
+
+        <solution>
+
+          <pre><code>def make_joint(withdraw, old_pass, new_pass):
+    &quot;&quot;&quot;Return a password&#x2d;protected withdraw function that has joint access to
+    the balance of withdraw.
+
+    &gt;&gt;&gt; w = make_withdraw(100, &#x27;hax0r&#x27;)
+    &gt;&gt;&gt; w(25, &#x27;hax0r&#x27;)
+    75
+    &gt;&gt;&gt; make_joint(w, &#x27;my&#x27;, &#x27;secret&#x27;)
+    &#x27;Incorrect password&#x27;
+    &gt;&gt;&gt; j = make_joint(w, &#x27;hax0r&#x27;, &#x27;secret&#x27;)
+    &gt;&gt;&gt; w(25, &#x27;secret&#x27;)
+    &#x27;Incorrect password&#x27;
+    &gt;&gt;&gt; j(25, &#x27;secret&#x27;)
+    50
+    &gt;&gt;&gt; j(25, &#x27;hax0r&#x27;)
+    25
+    &gt;&gt;&gt; j(100, &#x27;secret&#x27;)
+    &#x27;Insufficient funds&#x27;
+
+    &gt;&gt;&gt; j2 = make_joint(j, &#x27;secret&#x27;, &#x27;code&#x27;)
+    &gt;&gt;&gt; j2(5, &#x27;code&#x27;)
+    20
+    &gt;&gt;&gt; j2(5, &#x27;secret&#x27;)
+    15
+    &gt;&gt;&gt; j2(5, &#x27;hax0r&#x27;)
+    10
+
+    &gt;&gt;&gt; j2(25, &#x27;password&#x27;)
+    &#x27;Incorrect password&#x27;
+    &gt;&gt;&gt; j2(5, &#x27;secret&#x27;)
+    &quot;Frozen account. Attempts: [&#x27;my&#x27;, &#x27;secret&#x27;, &#x27;password&#x27;]&quot;
+    &gt;&gt;&gt; j(5, &#x27;secret&#x27;)
+    &quot;Frozen account. Attempts: [&#x27;my&#x27;, &#x27;secret&#x27;, &#x27;password&#x27;]&quot;
+    &gt;&gt;&gt; w(5, &#x27;hax0r&#x27;)
+    &quot;Frozen account. Attempts: [&#x27;my&#x27;, &#x27;secret&#x27;, &#x27;password&#x27;]&quot;
+    &gt;&gt;&gt; make_joint(w, &#x27;hax0r&#x27;, &#x27;hello&#x27;)
+    &quot;Frozen account. Attempts: [&#x27;my&#x27;, &#x27;secret&#x27;, &#x27;password&#x27;]&quot;
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+        </solution>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q make_joint --local</code></pre>
+
+
+
+        <h3 class="question" id="q6">Q6: 余数生成器</h3>
+        <p>与函数类似，生成器也可以是<em>高阶的</em>。对于这个问题，我们将编写 <code>remainders_generator</code> 函数，它会生成一系列生成器对象。</p>
+
+        <p><code>remainders_generator</code> 函数接受一个整数 <code>m</code>，并生成 <code>m</code> 个不同的生成器。第一个生成器会生成 <code>m</code>
+          的倍数（即除以 <code>m</code> 余数为 0 的数）。第二个生成器会生成除以 <code>m</code> 余数为 1 的自然数。最后一个生成器会生成除以 <code>m</code> 余数为
+          <code>m &#x2d; 1</code> 的自然数。
+        </p>
+
+        <blockquote>
+          <p><em>提示：</em> 你可以调用 <code>naturals</code> 函数来创建无限自然数的生成器。</p>
+        </blockquote>
+
+        <blockquote>
+          <p><em>提示：</em> 考虑定义一个内部生成器函数（在函数内部定义的生成器）。生成的不同生成器之间的唯一区别在于：不同的生成器的元素在除以 <code>m</code>
+            时具有特定的余数。这告诉你内部函数应该接受哪些参数呢？</p>
+        </blockquote>
+
+        <solution>
+
+          <pre><code>def remainders_generator(m):
+    &quot;&quot;&quot;
+    Yields m generators. The ith yielded generator yields natural numbers whose
+    remainder is i when divided by m.
+
+    &gt;&gt;&gt; import types
+    &gt;&gt;&gt; [isinstance(gen, types.GeneratorType) for gen in remainders_generator(5)]
+    [True, True, True, True, True]
+    &gt;&gt;&gt; remainders_four = remainders_generator(4)
+    &gt;&gt;&gt; for i in range(4):
+    ...     print(&quot;First 3 natural numbers with remainder {0} when divided by 4:&quot;.format(i))
+    ...     gen = next(remainders_four)
+    ...     for _ in range(3):
+    ...         print(next(gen))
+    First 3 natural numbers with remainder 0 when divided by 4:
+    4
+    8
+    12
+    First 3 natural numbers with remainder 1 when divided by 4:
+    1
+    5
+    9
+    First 3 natural numbers with remainder 2 when divided by 4:
+    2
+    6
+    10
+    First 3 natural numbers with remainder 3 when divided by 4:
+    3
+    7
+    11
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+        </solution>
+
+        <p>注意：如果你的实现是正确的，那么 <code>remainder_generator</code> 生成的每个 <em>生成器</em> 都是 <em>无限的</em> —— 你可以无限次调用
+          <code>next</code>，而不会遇到 <code>StopIteration</code> 异常。
+        </p>
+
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q remainders_generator --local</code></pre>
+
+        <script>
+          $('.alwaystoggle').css('display', 'inline-block');
+          $('.alwaystoggle').click(function () {
+            var solution_id = $(this).attr('id');
+            $('div.' + solution_id).slideToggle(600);
+          });
+        </script>
+
+
+      </div>
+
+      <div class='col-md-3 sticky'>
+        <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+          <ul>
+            <li><a href="#instructions">说明</a></li>
+            <li><a href="#required-questions">必答题</a></li>
+            <ul>
+              <li><a href="#hint-video">提示视频</a></li>
+            </ul>
+            <ul>
+              <li><a href="#nonlocal">非局部 (Nonlocal)</a></li>
+              <ul>
+                <li><a href="#q1">Q1: 创建银行</a></li>
+                <li><a href="#q2">Q2: 密码保护</a></li>
+              </ul>
+              <li><a href="#iterators-and-generators">迭代器和生成器</a></li>
+              <ul>
+                <li><a href="#q3">Q3: 重复值</a></li>
+                <li><a href="#q4">Q4: 生成排列</a></li>
+              </ul>
+              <li><a href="#submit">Submit</a></li>
+            </ul>
+            <li><a href="#extra-questions">附加题</a></li>
+            <ul>
+              <li><a href="#q5">Q5: 联合账户</a></li>
+              <li><a href="#q6">Q6: 余数生成器</a></li>
+            </ul>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="container">
+    <div class="row text-center">
+      <div class="col col-sm-4">
+        <h3><a href="../../">CS 61A</a></h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="../../weekly.html">Weekly Schedule</a></li>
+          <li><a href="../../office-hours.html">Office Hours</a></li>
+          <li><a href="../../staff.html">Staff</a></li>
+        </ul>
+      </div>
+      <div class="col col-sm-4">
+        <h3><a href="../../resources.html">Resources</a></h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="../../articles/studying.html">Studying Guide</a></li>
+          <li><a href="../../articles/debugging.html">Debugging Guide</a></li>
+          <li><a href="../../articles/composition.html">Composition Guide</a></li>
+        </ul>
+      </div>
+      <div class="col col-sm-4">
+        <h3><a href="../../articles/about.html">Policies</a></h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="../../articles/about.html#assignments">Assignments</a></li>
+          <li><a href="../../articles/about.html#exams">Exams</a></li>
+          <li><a href="../../articles/about.html#grading">Grading</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script src="../../assets/js/sketchy.js"></script>
+  <script>
+    $('.sidebar ul').addClass('nav nav-stacked noselect');
+    $('body').scrollspy({
+      target: '.sidebar',
+      offset: 40
+    });
+
+    function goToId(id) {
+      var target = $(id);
+      target.parent().show();
+      $('html,body').animate({
+        scrollTop: target.offset().top,
+      }, 100);
+      $("body").scrollspy('refresh');
+    }
+
+    if (location.hash) {
+      setTimeout(function () {
+        if (location.hash) {
+          goToId(location.hash);
+        }
+      }, 1);
+    }
+
+    $("a").click(function (event) {
+      var urlBeforeHashRegEx = new RegExp("^" + window.location.href.split("#")[0]);
+      if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+        event.preventDefault();
+        goToId(this.hash);
+        document.location.hash = this.hash;
+      }
+    });
+  </script>
+
+</body>
+
+</html>
