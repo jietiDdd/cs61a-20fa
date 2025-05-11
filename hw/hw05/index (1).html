@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta name="description" content="CS 61A: Structure and Interpretation of Computer Programs" />
+  <meta name="keywords" content="CS 61A, Computer Science, CS, 61A, Programming, John DeNero, Berkeley, EECS" />
+  <meta name="author" content="Hany Farid, John DeNero" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="../../assets/js/hl.js"></script>
+  <script>
+    // we aren't registering builtins since
+    //      (1) they don't render differently in the current CSS from other names
+    //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+    // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+    hljsRegister({
+      'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+  <script src="../../assets/js/dark-mode.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/mono-blue.css">
+  <link rel="icon" href="../../assets/images/favicon.ico">
+
+
+
+  <link rel="stylesheet" type="text/css" href="../../assets/css/hw.css">
+
+
+  <title>
+    Homework 5 | CS 61A Fall 2020
+  </title>
+</head>
+
+<body id="index" class="home">
+  <nav class="navbar navbar-default navbar-static-top">
+    <div class="container noselect">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#navbar-collapse-section">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../">
+          <img style="max-width:60px; margin-top: -20px;" class="logo" src="../../assets/images/logo.png" />
+        </a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbar-collapse-section">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Staff
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a href="../../instructor.html">Instructors</a></li>
+              <li><a href="../../TAs.html">TAs</a></li>
+              <li><a href="../../tutors.html">Tutors</a></li>
+            </ul>
+          </li>
+          <li><a href="../../resources.html">Resources</a></li>
+          <li><a href="../../articles/about.html">Syllabus</a></li>
+          <li><a href="https://code.cs61a.org">Code</a></li>
+          <li><a href="http://tutor.cs61a.org" target="_blank">Tutor</a></li>
+          <li>
+            <a style="color:white; font-size: 15px;vertical-align: middle" href="https://github.com/ChillyHigh/CS61A-CN"
+              title="前往仓库" target="_blank">
+              <img height="21px" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub"
+                style="filter: invert(1) brightness(1000%);">
+              <span style="vertical-align: middle;padding-left: 0.5rem;"> CS61A-CN</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="content" class="container">
+
+    <div class='row'>
+      <div class='col-md-9'>
+        <header>
+          <h1>
+
+            作业5: 面向对象编程, 链表, 树
+            <br>
+            <small>
+              Homework 5: Object-Oriented Programming, Linked Lists, Trees
+            </small>
+
+            <br>
+            <ul class="inline-block list-inline">
+              <li><a href="hw05.zip" class="label label-outline">hw05.zip</a></li>
+            </ul>
+
+
+          </h1>
+        </header>
+
+
+        <p><em>Due by 11:59pm on Monday, October 26</em></p>
+
+
+
+
+
+        <h3><a href="EN.html">查看英文原文</a></h3>
+
+        <h2>说明</h2>
+
+        <p>下载 <a href="hw05.zip">hw05.zip</a>。在压缩包中，你会找到一个名为 <a href="hw05.py">hw05.py</a> 的文件，以及一份 <code>ok</code>
+          自动评分器。</p>
+
+        <p><strong>提交：</strong>完成后使用<code>python3 ok
+              --submit</code>来提交代码。你可以在截止日期前多次提交；只有最后一次提交会被评分。请检查你是否成功提交了代码到<a
+            href="https://okpy.org/">okpy.org</a>。更多提交作业的说明请参见<a
+            href="../../lab/lab00#submitting-the-assignment">Lab0</a>。</p>
+        <p><strong>使用Ok:</strong>如果你对使用Ok有任何疑问，请参考<a href="../../articles/using-ok.html">本指南</a>。</p>
+
+        <p><strong>阅读材料：</strong>以下阅读材料可能对你有帮助</p>
+        <ul>
+          <li><a href="https://composingprograms.netlify.app/2/5">Section 2.5</a></li>
+          <li><a href="https://composingprograms.netlify.app/2/9">Section 2.9</a></li>
+        </ul>
+
+
+        <p><strong>评分：</strong>作业评分基于正确性。每个错误的问题将使总分减少一分。课程大纲中有作业恢复政策。
+          <strong>本次作业满分为2分。</strong>
+        </p>
+
+
+
+
+
+        <h1 id="required-questions">必答题</h1>
+
+
+
+        <h2 id="oop">面向对象编程 (OOP)</h2>
+
+
+        <h3 class="question" id="q1">Q1: 自动售货机</h3>
+
+        <p>创建一个名为 <code>VendingMachine</code> 的类，它表示一个用于售卖某些商品的自动售货机。
+          <code>VendingMachine</code> 对象应返回描述其交互过程的字符串。
+        </p>
+
+        <p>请补全 <code>VendingMachine</code> 类，添加适当的属性和方法，使其行为符合以下的 doctests：</p>
+
+
+        <solution>
+
+          <pre><code>class VendingMachine:
+    &quot;&quot;&quot;A vending machine that vends some product for some price.
+
+    &gt;&gt;&gt; v = VendingMachine(&#x27;candy&#x27;, 10)
+    &gt;&gt;&gt; v.vend()
+    &#x27;Inventory empty. Restocking required.&#x27;
+    &gt;&gt;&gt; v.add_funds(15)
+    &#x27;Inventory empty. Restocking required. Here is your $15.&#x27;
+    &gt;&gt;&gt; v.restock(2)
+    &#x27;Current candy stock: 2&#x27;
+    &gt;&gt;&gt; v.vend()
+    &#x27;You must add $10 more funds.&#x27;
+    &gt;&gt;&gt; v.add_funds(7)
+    &#x27;Current balance: $7&#x27;
+    &gt;&gt;&gt; v.vend()
+    &#x27;You must add $3 more funds.&#x27;
+    &gt;&gt;&gt; v.add_funds(5)
+    &#x27;Current balance: $12&#x27;
+    &gt;&gt;&gt; v.vend()
+    &#x27;Here is your candy and $2 change.&#x27;
+    &gt;&gt;&gt; v.add_funds(10)
+    &#x27;Current balance: $10&#x27;
+    &gt;&gt;&gt; v.vend()
+    &#x27;Here is your candy.&#x27;
+    &gt;&gt;&gt; v.add_funds(15)
+    &#x27;Inventory empty. Restocking required. Here is your $15.&#x27;
+
+    &gt;&gt;&gt; w = VendingMachine(&#x27;soda&#x27;, 2)
+    &gt;&gt;&gt; w.restock(3)
+    &#x27;Current soda stock: 3&#x27;
+    &gt;&gt;&gt; w.restock(3)
+    &#x27;Current soda stock: 6&#x27;
+    &gt;&gt;&gt; w.add_funds(2)
+    &#x27;Current balance: $2&#x27;
+    &gt;&gt;&gt; w.vend()
+    &#x27;Here is your soda.&#x27;
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+        </solution>
+
+        <blockquote>
+          <p><a href="https://docs.python.org/zh-cn/3/library/stdtypes.html#str.format">Python 字符串格式化语法</a> 可能对你有用。
+            下面是一个示例：</p>
+        </blockquote>
+        <pre><code>&gt;&gt;&gt; ten, twenty, thirty = 10, &#x27;twenty&#x27;, [30]
+&gt;&gt;&gt; &#x27;{0} plus {1} is {2}&#x27;.format(ten, twenty, thirty)
+&#x27;10 plus twenty is [30]&#x27;</code></pre>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q VendingMachine --local</code></pre>
+
+
+
+
+        <button id='toggle-1' class='btn btn-outline btn-lg alwaystoggle toggle'>
+          提示视频<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-1">
+
+          <iframe width="560" height="315"
+            src="//player.bilibili.com/player.html?isOutside=true&aid=427281261&bvid=BV1s3411G7yM&cid=765985411&p=52&autoplay=0"
+            scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+
+        <h3 class="question" id="q2">Q2: 铸币</h3>
+
+        <p>完成 <code>Mint</code> 和 <code>Coin</code> 类，使铸币厂创建的硬币具有正确的年份和价值。</p>
+
+        <ul>
+          <li>每个 <code>Mint</code> 实例都有一个 <code>year</code> 标记。<code>update</code> 方法将 <code>year</code> 标记设置为
+            <code>Mint</code> 类中的
+            <code>current_year</code> 类属性的值。
+          </li>
+          <li><code>create</code> 方法接受 <code>Coin</code> 的子类，并返回该类的一个实例，该实例的年份标记为当前铸币厂 <code>mint</code> 的年份
+            （如果 <code>mint</code> 未调用 <code>update</code> 方法，其年份可能不同于 <code>Mint.current_year</code>）。</li>
+          <li><code>Coin</code> 类的 <code>worth</code> 方法返回硬币的面值 <code>cents</code>，并且对于超过 50 年的硬币，
+            每多一年增加 1 cent。硬币的年龄可以通过用 <code>Mint</code> 类的 <code>current_year</code> 类属性减去硬币的年份来计算。</li>
+        </ul>
+
+
+        <solution>
+
+          <pre><code>class Mint:
+    &quot;&quot;&quot;A mint creates coins by stamping on years.
+
+    The update method sets the mint&#x27;s stamp to Mint.current_year.
+
+    &gt;&gt;&gt; mint = Mint()
+    &gt;&gt;&gt; mint.year
+    2020
+    &gt;&gt;&gt; dime = mint.create(Dime)
+    &gt;&gt;&gt; dime.year
+    2020
+    &gt;&gt;&gt; Mint.current_year = 2100  # Time passes
+    &gt;&gt;&gt; nickel = mint.create(Nickel)
+    &gt;&gt;&gt; nickel.year     # The mint has not updated its stamp yet
+    2020
+    &gt;&gt;&gt; nickel.worth()  # 5 cents + (80 &#x2d; 50 years)
+    35
+    &gt;&gt;&gt; mint.update()   # The mint&#x27;s year is updated to 2100
+    &gt;&gt;&gt; Mint.current_year = 2175     # More time passes
+    &gt;&gt;&gt; mint.create(Dime).worth()    # 10 cents + (75 &#x2d; 50 years)
+    35
+    &gt;&gt;&gt; Mint().create(Dime).worth()  # A new mint has the current year
+    10
+    &gt;&gt;&gt; dime.worth()     # 10 cents + (155 &#x2d; 50 years)
+    115
+    &gt;&gt;&gt; Dime.cents = 20  # Upgrade all dimes!
+    &gt;&gt;&gt; dime.worth()     # 20 cents + (155 &#x2d; 50 years)
+    125
+    &quot;&quot;&quot;
+    current_year = 2020
+
+    def __init__(self):
+        self.update()
+
+    def create(self, kind):
+        "*** YOUR CODE HERE ***"
+
+    def update(self):
+        "*** YOUR CODE HERE ***"
+
+class Coin:
+    def __init__(self, year):
+        self.year = year
+
+    def worth(self):
+        "*** YOUR CODE HERE ***"
+
+class Nickel(Coin):
+    cents = 5
+
+class Dime(Coin):
+    cents = 10</code></pre>
+
+        </solution>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q Mint --local</code></pre>
+
+
+        <button id='toggle-2' class='btn btn-outline btn-lg alwaystoggle toggle'>
+          提示视频<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-2">
+
+          <iframe width="560" height="315"
+            src="//player.bilibili.com/player.html?isOutside=true&aid=427281261&bvid=BV1s3411G7yM&cid=765985411&p=52&autoplay=0&t=334"
+            scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+
+
+        <h2 id="linked-lists">链表</h2>
+
+        <h3 class="question" id="q3">Q3: 存储数位</h3>
+
+        <p>编写一个函数 <code>store_digits</code>，它接收一个整数 <code>n</code>，并返回一个链表，
+          该链表的每个元素都是 <code>n</code> 的一个数位。</p>
+
+        <blockquote>
+          <p>注意：不要使用任何字符串操作函数，如 <code>str</code> 和 <code>reversed</code>。</p>
+        </blockquote>
+
+
+        <solution>
+
+          <pre><code>def store_digits(n):
+    &quot;&quot;&quot;Stores the digits of a positive number n in a linked list.
+
+    &gt;&gt;&gt; s = store_digits(1)
+    &gt;&gt;&gt; s
+    Link(1)
+    &gt;&gt;&gt; store_digits(2345)
+    Link(2, Link(3, Link(4, Link(5))))
+    &gt;&gt;&gt; store_digits(876)
+    Link(8, Link(7, Link(6)))
+    &gt;&gt;&gt; # a check for restricted functions
+    &gt;&gt;&gt; import inspect, re
+    &gt;&gt;&gt; cleaned = re.sub(r&quot;#.*\\n&quot;, &#x27;&#x27;, re.sub(r&#x27;&quot;{3}[\s\S]*?&quot;{3}&#x27;, &#x27;&#x27;, inspect.getsource(store_digits)))
+    &gt;&gt;&gt; print(&quot;Do not use str or reversed!&quot;) if any([r in cleaned for r in [&quot;str&quot;, &quot;reversed&quot;]]) else None
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+        </solution>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q store_digits --local</code></pre>
+
+
+        <button id='toggle-3' class='btn btn-outline btn-lg alwaystoggle toggle'>
+          提示视频<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-3">
+
+          <iframe width="560" height="315"
+            src="//player.bilibili.com/player.html?isOutside=true&aid=427281261&bvid=BV1s3411G7yM&cid=765985411&p=52&autoplay=0&t=722"
+            scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+
+
+        <h1 id="extra-questions">附加题</h1>
+
+
+
+        <h2 id="trees">树</h2>
+
+        <h3 class="question" id="q4">Q4: 判断二叉搜索树</h3>
+
+        <p>编写一个函数 <code>is_bst</code>，它接收一棵树 <code>t</code>，并在且仅在 <code>t</code> 是一棵有效的二叉搜索树时返回
+          <code>True</code>。二叉搜索树需满足以下条件：
+        </p>
+
+        <ul>
+          <li>每个节点最多有两个子节点（叶子节点自动视为有效的二叉搜索树）。</li>
+          <li>所有子树本身也是有效的二叉搜索树。</li>
+          <li>对于每个节点，该节点左子树中的所有值小于等于该节点的标签。</li>
+          <li>对于每个节点，该节点右子树中的所有值大于该节点的标签。</li>
+        </ul>
+
+        <p>以下是一个二叉搜索树的示例：</p>
+
+
+        <p><img class="img-responsive center-block" src="https://miro.medium.com/max/1424/1*F8MmBnUQyOA8-Rajg69nSQ.png"
+            alt="bst"></p>
+
+        <p>请注意，如果一个节点只有一个子节点，该子节点可以被视为左子节点或右子节点。你需要将这一点考虑在内。</p>
+
+        <p><em>提示：</em> 编写辅助函数 <code>bst_min</code> 和 <code>bst_max</code> 可能会有所帮助，它们分别返回一棵树的最小值和最大值（前提是该树是有效的二叉搜索树）。
+        </p>
+
+
+        <solution>
+
+          <pre><code>def is_bst(t):
+    &quot;&quot;&quot;Returns True if the Tree t has the structure of a valid BST.
+
+    &gt;&gt;&gt; t1 = Tree(6, [Tree(2, [Tree(1), Tree(4)]), Tree(7, [Tree(7), Tree(8)])])
+    &gt;&gt;&gt; is_bst(t1)
+    True
+    &gt;&gt;&gt; t2 = Tree(8, [Tree(2, [Tree(9), Tree(1)]), Tree(3, [Tree(6)]), Tree(5)])
+    &gt;&gt;&gt; is_bst(t2)
+    False
+    &gt;&gt;&gt; t3 = Tree(6, [Tree(2, [Tree(4), Tree(1)]), Tree(7, [Tree(7), Tree(8)])])
+    &gt;&gt;&gt; is_bst(t3)
+    False
+    &gt;&gt;&gt; t4 = Tree(1, [Tree(2, [Tree(3, [Tree(4)])])])
+    &gt;&gt;&gt; is_bst(t4)
+    True
+    &gt;&gt;&gt; t5 = Tree(1, [Tree(0, [Tree(&#x2d;1, [Tree(&#x2d;2)])])])
+    &gt;&gt;&gt; is_bst(t5)
+    True
+    &gt;&gt;&gt; t6 = Tree(1, [Tree(4, [Tree(2, [Tree(3)])])])
+    &gt;&gt;&gt; is_bst(t6)
+    True
+    &gt;&gt;&gt; t7 = Tree(2, [Tree(1, [Tree(5)]), Tree(4)])
+    &gt;&gt;&gt; is_bst(t7)
+    False
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+        </solution>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q is_bst --local</code></pre>
+
+        <h3 class="question" id="q5">Q5: 前序遍历</h3>
+
+        <p>定义函数 <code>preorder</code>，该函数接受一棵树作为参数，并返回一个列表，包含树中所有的元素，顺序与 <code>print_tree</code> 打印它们的顺序相同。</p>
+
+        <p>下图展示了节点的打印顺序，箭头表示函数调用的顺序。</p>
+
+        <p><img class="img-responsive center-block" src="assets/preorder.png" alt="前序遍历"></p>
+
+        <blockquote>
+          <p><em>注意</em>：这种节点的遍历顺序称为前序遍历（preorder traversal）。</p>
+        </blockquote>
+
+        <solution>
+
+          <pre><code>def preorder(t):
+    &quot;&quot;&quot;Return a list of the entries in this tree in the order that they
+    would be visited by a preorder traversal (see problem description).
+
+    &gt;&gt;&gt; numbers = Tree(1, [Tree(2), Tree(3, [Tree(4), Tree(5)]), Tree(6, [Tree(7)])])
+    &gt;&gt;&gt; preorder(numbers)
+    [1, 2, 3, 4, 5, 6, 7]
+    &gt;&gt;&gt; preorder(Tree(2, [Tree(4, [Tree(6)])]))
+    [2, 4, 6]
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+        </solution>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q preorder --local</code></pre>
+
+        <h2 id="generators-trees">生成器/树</h2>
+
+        <h3 class="question" id="q6">Q6: 生成路径</h3>
+
+        <p>定义一个生成器函数 <code>path_yielder</code>，它接受一棵树 <code>t</code> 和一个值 <code>value</code>，返回一个生成器对象，该生成器会生成从
+          <code>t</code> 的根节点到标签为 <code>value</code> 的节点的所有路径。
+        </p>
+
+        <p><code>t</code> 是使用类实现的，而不是基于函数的ADT（抽象数据类型）。</p>
+
+        <p>每条路径应该以列表的形式表示，其中包含树中沿路径的所有标签。路径的生成顺序可以是任意的。</p>
+
+        <p>我们已经为你提供了一个（部分）代码框架。你不一定要使用这个框架，但如果你的实现与其有较大不同，你可能需要思考如何调整你的代码以适配该框架。</p>
+
+
+        <pre><code>def path_yielder(t, value):
+    &quot;&quot;&quot;Yields all possible paths from the root of t to a node with the label value
+    as a list.
+
+    &gt;&gt;&gt; t1 = Tree(1, [Tree(2, [Tree(3), Tree(4, [Tree(6)]), Tree(5)]), Tree(5)])
+    &gt;&gt;&gt; print(t1)
+    1
+      2
+        3
+        4
+          6
+        5
+      5
+    &gt;&gt;&gt; next(path_yielder(t1, 6))
+    [1, 2, 4, 6]
+    &gt;&gt;&gt; path_to_5 = path_yielder(t1, 5)
+    &gt;&gt;&gt; sorted(list(path_to_5))
+    [[1, 2, 5], [1, 5]]
+
+    &gt;&gt;&gt; t2 = Tree(0, [Tree(2, [t1])])
+    &gt;&gt;&gt; print(t2)
+    0
+      2
+        1
+          2
+            3
+            4
+              6
+            5
+          5
+    &gt;&gt;&gt; path_to_2 = path_yielder(t2, 2)
+    &gt;&gt;&gt; sorted(list(path_to_2))
+    [[0, 2], [0, 2, 1, 2]]
+    &quot;&quot;&quot;
+
+    "*** YOUR CODE HERE ***"
+
+    for _______________ in _________________:
+        for _______________ in _________________:
+
+            "*** YOUR CODE HERE ***"
+</code></pre>
+
+        <blockquote>
+          <p><strong>提示：</strong>如果你不知道如何开始，可以思考如果这不是一个生成器函数，你会如何解决这个问题？你的递归调用会是什么样的？在一个生成器函数中，如果你在函数体内进行“递归调用”，会发生什么？
+          </p>
+        </blockquote>
+
+        <p>使用 Ok 来测试你的代码：</p>
+        <pre><code class="nohighlight">python3 ok -q path_yielder --local</code></pre>
+
+
+
+        <script>
+          $('.alwaystoggle').css('display', 'inline-block');
+          $('.alwaystoggle').click(function () {
+            var solution_id = $(this).attr('id');
+            $('div.' + solution_id).slideToggle(600);
+          });
+        </script>
+
+
+      </div>
+
+      <div class='col-md-3 sticky'>
+        <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+          <ul>
+            <li><a href="#instructions">说明</a></li>
+            <li><a href="#required-questions">必答题</a></li>
+            <ul>
+              <li><a href="#oop">面向对象编程 (OOP)</a></li>
+              <ul>
+                <li><a href="#q1">Q1: 自动售货机</a></li>
+                <li><a href="#q2">Q2: 铸币</a></li>
+              </ul>
+              <li><a href="#linked-lists">链表</a></li>
+              <ul>
+                <li><a href="#q3">Q3: 存储数位</a></li>
+              </ul>
+            </ul>
+            <li><a href="#extra-questions">附加题</a></li>
+            <ul>
+              <li><a href="#trees">树</a></li>
+              <ul>
+                <li><a href="#q4">Q4: 判断二叉搜索树</a></li>
+                <li><a href="#q5">Q5: 前序遍历</a></li>
+              </ul>
+              <li><a href="#generators-trees">生成器/树</a></li>
+              <ul>
+                <li><a href="#q6">Q6: 生成路径</a></li>
+              </ul>
+            </ul>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="container">
+    <div class="row text-center">
+      <div class="col col-sm-4">
+        <h3><a href="../../">CS 61A</a></h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="../../weekly.html">Weekly Schedule</a></li>
+          <li><a href="../../office-hours.html">Office Hours</a></li>
+          <li><a href="../../staff.html">Staff</a></li>
+        </ul>
+      </div>
+      <div class="col col-sm-4">
+        <h3><a href="../../resources.html">Resources</a></h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="../../articles/studying.html">Studying Guide</a></li>
+          <li><a href="../../articles/debugging.html">Debugging Guide</a></li>
+          <li><a href="../../articles/composition.html">Composition Guide</a></li>
+        </ul>
+      </div>
+      <div class="col col-sm-4">
+        <h3><a href="../../articles/about.html">Policies</a></h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="../../articles/about.html#assignments">Assignments</a></li>
+          <li><a href="../../articles/about.html#exams">Exams</a></li>
+          <li><a href="../../articles/about.html#grading">Grading</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script src="../../assets/js/sketchy.js"></script>
+  <script>
+    $('.sidebar ul').addClass('nav nav-stacked noselect');
+    $('body').scrollspy({
+      target: '.sidebar',
+      offset: 40
+    });
+
+    function goToId(id) {
+      var target = $(id);
+      target.parent().show();
+      $('html,body').animate({
+        scrollTop: target.offset().top,
+      }, 100);
+      $("body").scrollspy('refresh');
+    }
+
+    if (location.hash) {
+      setTimeout(function () {
+        if (location.hash) {
+          goToId(location.hash);
+        }
+      }, 1);
+    }
+
+    $("a").click(function (event) {
+      var urlBeforeHashRegEx = new RegExp("^" + window.location.href.split("#")[0]);
+      if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+        event.preventDefault();
+        goToId(this.hash);
+        document.location.hash = this.hash;
+      }
+    });
+  </script>
+
+</body>
+
+</html>
