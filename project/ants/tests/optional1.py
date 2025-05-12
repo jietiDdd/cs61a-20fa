@@ -5,7 +5,7 @@ test = {
     {
       'cases': [
         {
-          'answer': 'd867280d511300bf4fa42dae8866a575',
+          'answer': 'All Ant types have a blocks_path attribute that is inherited from the Ant superclass',
           'choices': [
             r"""
             All Ant types have a blocks_path attribute that is inherited from
@@ -16,11 +16,11 @@ test = {
             'All Ant types except for NinjaAnt have a blocks_path attribute'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'Which Ant types have a blocks_path attribute?'
         },
         {
-          'answer': '0a74e2e9020b74e8968cc9a0ed1ef38d',
+          'answer': 'blocks_path is True for every Ant subclass except NinjaAnt',
           'choices': [
             'blocks_path is True for every Ant subclass except NinjaAnt',
             'blocks_path is False for every Ant subclass except NinjaAnt',
@@ -28,11 +28,11 @@ test = {
             'blocks_path is False for all Ants'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'What is the value of blocks_path for each Ant subclass?'
         },
         {
-          'answer': 'ad3ed5994969f15b71d99c706bb59339',
+          'answer': "When there is an Ant whose blocks_path attribute is True in the Bee's place",
           'choices': [
             "When there is an Ant in the Bee's place",
             r"""
@@ -43,19 +43,19 @@ test = {
             "When there are no Ants in the Bee's place"
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'When is the path of a Bee blocked?'
         },
         {
-          'answer': '94f9395e9fd1d730fd15d335ecdaedd2',
+          'answer': "Reduces the Bee's armor by the NinjaAnt's damage attribute",
           'choices': [
-            "Reduces the Bee's health by the NinjaAnt's damage attribute",
-            "Reduces the Bee's health to 0",
+            "Reduces the Bee's armor by the NinjaAnt's damage attribute",
+            "Reduces the Bee's armor to 0",
             "Nothing, the NinjaAnt doesn't damage Bees",
             "Blocks the Bee's path"
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'What does a NinjaAnt do to each Bee that flies in its place?'
         }
       ],
@@ -68,31 +68,26 @@ test = {
           'code': r"""
           >>> # Testing NinjaAnt parameters
           >>> ninja = NinjaAnt()
-          >>> ninja.health
-          d89cf7c79d5a479b0f636734143ed5e6
-          # locked
+          >>> ninja.armor
+          1
           >>> NinjaAnt.food_cost
-          62674984f877ec783f37e8b8b9c264d0
-          # locked
+          5
           """,
           'hidden': False,
-          'locked': True
+          'locked': False
         },
         {
           'code': r"""
           >>> # Testing blocks_path
           >>> NinjaAnt.blocks_path
-          03456a09f22295a39ca84d133a26f63d
-          # locked
+          False
           >>> HungryAnt.blocks_path
-          c7a88a0ffd3aef026b98eef6e7557da3
-          # locked
+          True
           >>> FireAnt.blocks_path
-          c7a88a0ffd3aef026b98eef6e7557da3
-          # locked
+          True
           """,
           'hidden': False,
-          'locked': True
+          'locked': False
         },
         {
           'code': r"""
@@ -107,21 +102,17 @@ test = {
           >>> p1.add_insect(ninja)              # Add the Bee and NinjaAnt to p1
           >>> bee.action(gamestate)
           >>> bee.place is ninja.place          # Did NinjaAnt block the Bee from moving?
-          03456a09f22295a39ca84d133a26f63d
-          # locked
+          False
           >>> bee.place is p0
-          c7a88a0ffd3aef026b98eef6e7557da3
-          # locked
-          >>> ninja.health
-          d89cf7c79d5a479b0f636734143ed5e6
-          # locked
+          True
+          >>> ninja.armor
+          1
           >>> bee.action(gamestate)
           >>> bee.place is p0                   # Did ThrowerAnt block the Bee from moving?
-          c7a88a0ffd3aef026b98eef6e7557da3
-          # locked
+          True
           """,
           'hidden': False,
-          'locked': True
+          'locked': False
         },
         {
           'code': r"""
@@ -137,21 +128,17 @@ test = {
           >>> p1.add_insect(ninja_fire)              # Add the Bee and NinjaAnt to p1
           >>> bee.action(gamestate)
           >>> bee.place is ninja_fire.place          # Did the "ninjaish" FireAnt block the Bee from moving?
-          03456a09f22295a39ca84d133a26f63d
-          # locked
+          False
           >>> bee.place is p0
-          c7a88a0ffd3aef026b98eef6e7557da3
-          # locked
-          >>> ninja_fire.health
-          d89cf7c79d5a479b0f636734143ed5e6
-          # locked
+          True
+          >>> ninja_fire.armor
+          1
           >>> bee.action(gamestate)
           >>> bee.place is p0                   # Did ThrowerAnt block the Bee from moving?
-          c7a88a0ffd3aef026b98eef6e7557da3
-          # locked
+          True
           """,
           'hidden': False,
-          'locked': True
+          'locked': False
         },
         {
           'code': r"""
@@ -162,7 +149,7 @@ test = {
           >>> ninja = NinjaAnt()
           >>> test_place.add_insect(ninja)
           >>> ninja.action(gamestate)   # should strike all bees in place
-          >>> [bee.health for bee in test_place.bees]
+          >>> [bee.armor for bee in test_place.bees]
           [1, 1, 1]
           """,
           'hidden': False,
@@ -178,7 +165,7 @@ test = {
           >>> ninja.damage = 50
           >>> test_place.add_insect(ninja)
           >>> ninja.action(gamestate)   # should strike all bees in place
-          >>> [bee.health for bee in test_place.bees]
+          >>> [bee.armor for bee in test_place.bees]
           [50, 50, 50]
           """,
           'hidden': False,
@@ -209,7 +196,7 @@ test = {
           >>> buffNinja.damage = 500  # Sharpen the sword
           >>> place.add_insect(buffNinja)
           >>> buffNinja.action(gamestate)
-          >>> bee.health
+          >>> bee.armor
           400
           """,
           'hidden': False,
@@ -253,11 +240,10 @@ test = {
           'code': r"""
           >>> from ants import *
           >>> NinjaAnt.implemented
-          c7a88a0ffd3aef026b98eef6e7557da3
-          # locked
+          True
           """,
           'hidden': False,
-          'locked': True
+          'locked': False
         }
       ],
       'scored': True,

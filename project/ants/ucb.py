@@ -1,5 +1,7 @@
 """The UCB module contains functions specific to 61A projects at UC Berkeley."""
 
+from __future__ import print_function
+
 import code
 import functools
 import inspect

@@ -5,7 +5,7 @@ test = {
     {
       'cases': [
         {
-          'answer': '5fc190eff661b8759ea938b0de913597',
+          'answer': 'ThrowerAnt',
           'choices': [
             'ThrowerAnt',
             'ShortThrower',
@@ -13,11 +13,11 @@ test = {
             'Bee'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'What class do ShortThrower and LongThrower inherit from?'
         },
         {
-          'answer': '0219746f5d16f1e9137ce1d8ce1f8dd6',
+          'answer': 'There is no restriction on how far a regular ThrowerAnt can throw',
           'choices': [
             'A regular ThrowerAnt can only attack Bees at least 3 places away',
             'A regular ThrowerAnt can only attack Bees at most 3 places away',
@@ -25,11 +25,11 @@ test = {
             'There is no restriction on how far a regular ThrowerAnt can throw'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'What constraint does a regular ThrowerAnt have on its throwing distance?'
         },
         {
-          'answer': 'beea9dfab31aa4e85a6806393fa9e6ba',
+          'answer': 'A LongThrower can only attack Bees at least 5 places away',
           'choices': [
             'A LongThrower can only attack Bees at least 5 places away',
             'A LongThrower can only attack Bees at least 3 places away',
@@ -37,11 +37,11 @@ test = {
             'There is no restriction on how far a LongThrower can throw'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'What constraint does a LongThrower have on its throwing distance?'
         },
         {
-          'answer': 'cd688c2c133ce9e585711715a5b65a81',
+          'answer': 'A ShortThrower can only attack Bees at most 3 places away',
           'choices': [
             'A ShortThrower can only attack Bees at least 3 places away',
             'A ShortThrower can only attack Bees at most 3 places away',
@@ -49,11 +49,11 @@ test = {
             'There is no restriction on how far a ShortThrower can throw'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'What constraint does a ShortThrower have on its throwing distance?'
         },
         {
-          'answer': '643156e8120f86f223b6ffa5f8345c37',
+          'answer': 'The closest Bee in front of it within range',
           'choices': [
             'The closest Bee in front of it within range',
             'The closest Bee behind it within range',
@@ -61,7 +61,7 @@ test = {
             'Any Bee within range'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': r"""
           With the addition of these new ThrowerAnt subclasses, we must modify
           our definition of nearest_bee. Now what Bee should ThrowerAnts throw
@@ -78,58 +78,15 @@ test = {
           'code': r"""
           >>> # Testing Long/ShortThrower parameters
           >>> ShortThrower.food_cost
-          20d533d3e06345c8bd7072212867f2d1
-          # locked
+          2
           >>> LongThrower.food_cost
-          20d533d3e06345c8bd7072212867f2d1
-          # locked
+          2
           >>> short_t = ShortThrower()
           >>> long_t = LongThrower()
-          >>> short_t.health
-          d89cf7c79d5a479b0f636734143ed5e6
-          # locked
-          >>> long_t.health
-          d89cf7c79d5a479b0f636734143ed5e6
-          # locked
-          """,
-          'hidden': False,
-          'locked': True
-        },
-        {
-          'code': r"""
-          >>> from ants import *
-          >>> LongThrower.implemented
-          True
-          >>> ShortThrower.implemented
-          True
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> # Test ShortThrower hit
-          >>> ant = ShortThrower()
-          >>> in_range = Bee(2)
-          >>> gamestate.places['tunnel_0_0'].add_insect(ant)
-          >>> gamestate.places["tunnel_0_3"].add_insect(in_range)
-          >>> ant.action(gamestate)
-          >>> in_range.health
+          >>> short_t.armor
           1
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> # Testing ShortThrower miss
-          >>> ant = ShortThrower()
-          >>> out_of_range = Bee(2)
-          >>> gamestate.places["tunnel_0_0"].add_insect(ant)
-          >>> gamestate.places["tunnel_0_4"].add_insect(out_of_range)
-          >>> ant.action(gamestate)
-          >>> out_of_range.health
-          2
+          >>> long_t.armor
+          1
           """,
           'hidden': False,
           'locked': False
@@ -142,7 +99,7 @@ test = {
           >>> gamestate.places['tunnel_0_0'].add_insect(ant)
           >>> gamestate.places["tunnel_0_5"].add_insect(in_range)
           >>> ant.action(gamestate)
-          >>> in_range.health
+          >>> in_range.armor
           1
           """,
           'hidden': False,
@@ -156,7 +113,7 @@ test = {
           >>> gamestate.places["tunnel_0_0"].add_insect(ant)
           >>> gamestate.places["tunnel_0_4"].add_insect(out_of_range)
           >>> ant.action(gamestate)
-          >>> out_of_range.health
+          >>> out_of_range.armor
           2
           """,
           'hidden': False,
@@ -182,10 +139,38 @@ test = {
           >>> gamestate.places["tunnel_0_4"].add_insect(out_of_range)
           >>> gamestate.places["tunnel_0_5"].add_insect(in_range)
           >>> ant.action(gamestate)
-          >>> out_of_range.health
+          >>> out_of_range.armor
           2
-          >>> in_range.health
+          >>> in_range.armor
           1
+          """,
+          'hidden': False,
+          'locked': False
+        },
+        {
+          'code': r"""
+          >>> # Test ShortThrower hit
+          >>> ant = ShortThrower()
+          >>> in_range = Bee(2)
+          >>> gamestate.places['tunnel_0_0'].add_insect(ant)
+          >>> gamestate.places["tunnel_0_3"].add_insect(in_range)
+          >>> ant.action(gamestate)
+          >>> in_range.armor
+          1
+          """,
+          'hidden': False,
+          'locked': False
+        },
+        {
+          'code': r"""
+          >>> # Testing ShortThrower miss
+          >>> ant = ShortThrower()
+          >>> out_of_range = Bee(2)
+          >>> gamestate.places["tunnel_0_0"].add_insect(ant)
+          >>> gamestate.places["tunnel_0_4"].add_insect(out_of_range)
+          >>> ant.action(gamestate)
+          >>> out_of_range.armor
+          2
           """,
           'hidden': False,
           'locked': False
@@ -200,9 +185,9 @@ test = {
           >>> gamestate.places["tunnel_0_4"].add_insect(bee1)
           >>> gamestate.places["tunnel_0_5"].add_insect(bee2)
           >>> thrower.action(gamestate)
-          >>> bee1.health
+          >>> bee1.armor
           1001
-          >>> bee2.health
+          >>> bee2.armor
           1000
           """,
           'hidden': False,
@@ -218,9 +203,9 @@ test = {
           >>> gamestate.places["tunnel_0_5"].add_insect(bee1)
           >>> gamestate.places["tunnel_0_6"].add_insect(bee2)
           >>> thrower.action(gamestate)
-          >>> bee1.health
+          >>> bee1.armor
           1000
-          >>> bee2.health
+          >>> bee2.armor
           1001
           """,
           'hidden': False,
@@ -234,7 +219,7 @@ test = {
           >>> gamestate.places["tunnel_0_6"].add_insect(ant)
           >>> gamestate.places["tunnel_0_7"].add_insect(bee)
           >>> ant.action(gamestate)
-          >>> bee.health
+          >>> bee.armor
           2
           """,
           'hidden': False,
@@ -251,7 +236,7 @@ test = {
           >>> bee = Bee(2)
           >>> gamestate.places["tunnel_0_6"].add_insect(bee)
           >>> ant.action(gamestate)
-          >>> bee.health
+          >>> bee.armor
           1
           """,
           'hidden': False,
@@ -288,7 +273,7 @@ test = {
           >>> bee = Bee(2)
           >>> gamestate.places["tunnel_0_0"].add_insect(bee)
           >>> ant.action(gamestate)
-          >>> bee.health
+          >>> bee.armor
           1
           """,
           'hidden': False,
@@ -302,7 +287,7 @@ test = {
           >>> bee = Bee(2)
           >>> gamestate.places["tunnel_0_99"].add_insect(bee)
           >>> ant.action(gamestate)
-          >>> bee.health
+          >>> bee.armor
           1
           """,
           'hidden': False,
@@ -318,7 +303,7 @@ test = {
           >>> exact_bee = Bee(2)
           >>> gamestate.places["tunnel_0_6"].add_insect(exact_bee)
           >>> ant.action(gamestate)
-          >>> exact_bee.health
+          >>> exact_bee.armor
           1
           """,
           'hidden': False,
@@ -334,7 +319,23 @@ test = {
           >>> close_bee = Bee(2)
           >>> gamestate.places["tunnel_0_5"].add_insect(close_bee)
           >>> ant.action(gamestate)
-          >>> close_bee.health
+          >>> close_bee.armor
+          2
+          """,
+          'hidden': False,
+          'locked': False
+        },
+        {
+          'code': r"""
+          >>> # Special thrower class that just hits things 6 away
+          >>> class JustSixThrower(ThrowerAnt):
+          ...   min_range = max_range = 6
+          >>> ant = JustSixThrower()
+          >>> gamestate.places["tunnel_0_0"].add_insect(ant)
+          >>> far_bee = Bee(2)
+          >>> gamestate.places["tunnel_0_7"].add_insect(far_bee)
+          >>> ant.action(gamestate)
+          >>> far_bee.armor
           2
           """,
           'hidden': False,
@@ -356,27 +357,14 @@ test = {
       'cases': [
         {
           'code': r"""
-          >>> # Special thrower class that just hits things 6 away
-          >>> class JustSixThrower(ThrowerAnt):
-          ...   min_range = max_range = 6
-          >>> ant = JustSixThrower()
-          >>> gamestate.places["tunnel_0_0"].add_insect(ant)
-          >>> far_bee = Bee(2)
-          >>> gamestate.places["tunnel_0_7"].add_insect(far_bee)
-          >>> ant.action(gamestate)
-          >>> far_bee.health
-          2
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
           >>> # Testing LongThrower Inheritance from ThrowerAnt
           >>> def new_action(self, gamestate):
           ...     raise NotImplementedError()
           >>> def new_throw_at(self, target):
           ...     raise NotImplementedError()
+          >>> old_thrower_action = ThrowerAnt.action
+          >>> old_throw_at = ThrowerAnt.throw_at
+          
           >>> ThrowerAnt.action = new_action
           >>> test_long = LongThrower()
           >>> passed = 0
@@ -405,6 +393,9 @@ test = {
           ...     raise NotImplementedError()
           >>> def new_throw_at(self, target):
           ...     raise NotImplementedError()
+          >>> old_thrower_action = ThrowerAnt.action
+          >>> old_throw_at = ThrowerAnt.throw_at
+          
           >>> ThrowerAnt.action = new_action
           >>> test_short = ShortThrower()
           >>> passed = 0
@@ -435,14 +426,31 @@ test = {
       >>> beehive, layout = Hive(AssaultPlan()), dry_layout
       >>> dimensions = (1, 9)
       >>> gamestate = GameState(None, beehive, ant_types(), layout, dimensions)
-      >>> old_thrower_action = ThrowerAnt.action
-      >>> old_throw_at = ThrowerAnt.throw_at
       >>> #
       """,
       'teardown': r"""
       >>> ThrowerAnt.action = old_thrower_action
       >>> ThrowerAnt.throw_at = old_throw_at
       """,
+      'type': 'doctest'
+    },
+    {
+      'cases': [
+        {
+          'code': r"""
+          >>> from ants import *
+          >>> LongThrower.implemented
+          True
+          >>> ShortThrower.implemented
+          True
+          """,
+          'hidden': False,
+          'locked': False
+        }
+      ],
+      'scored': True,
+      'setup': '',
+      'teardown': '',
       'type': 'doctest'
     }
   ]

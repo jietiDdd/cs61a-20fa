@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8513cbd7-1230-41df-82a4-2c7b82d53cae" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ants.py" beforeDir="false" afterPath="$PROJECT_DIR$/ants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ants_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ants_gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ants_plans.py" beforeDir="false" afterPath="$PROJECT_DIR$/ants_plans.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ants_strategies.py" beforeDir="false" afterPath="$PROJECT_DIR$/ants_strategies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ants_text.py" beforeDir="false" afterPath="$PROJECT_DIR$/ants_text.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graphics.py" beforeDir="false" afterPath="$PROJECT_DIR$/graphics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ok" beforeDir="false" afterPath="$PROJECT_DIR$/ok" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj03.ok" beforeDir="false" afterPath="$PROJECT_DIR$/proj03.ok" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/00.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/00.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/01.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/01.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/02.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/02.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/03.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/03.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/04.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/04.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/05.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/05.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/06.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/06.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/07.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/07.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/08.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/08.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/09.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/09.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/10.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/11.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/EC.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/EC.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/optional1.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/optional1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/optional2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/optional2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/optional3.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/optional3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ucb.py" beforeDir="false" afterPath="$PROJECT_DIR$/ucb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="2wyfWcUk0IkQJw8jWhV4ECMdru6" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.23726.102" />
+        <option value="bundled-python-sdk-5e1850174b45-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.23726.102" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="8513cbd7-1230-41df-82a4-2c7b82d53cae" name="更改" comment="" />
+      <created>1747018768254</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1747018768254</updated>
+      <workItem from="1747018769862" duration="14478000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -1,11 +1,11 @@
 test = {
   'name': 'Problem 3',
-  'points': 2,
+  'points': 3,
   'suites': [
     {
       'cases': [
         {
-          'answer': '8921294332adbef5e6db219b03adedf9',
+          'answer': 'The ThrowerAnt finds the nearest place in front of its own place that has Bees and throws at a random Bee in that place',
           'choices': [
             r"""
             The ThrowerAnt finds the nearest place in front of its own place
@@ -22,11 +22,11 @@ test = {
             'The ThrowerAnt throws at a random Bee in its own Place'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'What Bee should a ThrowerAnt throw at?'
         },
         {
-          'answer': '9bd9c23a391f841e8d9e4147c56659a7',
+          'answer': "The place's entrance instance attribute",
           'choices': [
             "The place's entrance instance attribute",
             "The place's exit instance attribute",
@@ -34,40 +34,29 @@ test = {
             'Decrement the place by 1'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'How do you get the Place object in front of another Place object?'
         },
         {
-          'answer': '2ca313dd416803bfaecbcf4a2d1851c1',
+          'answer': 'The Hive',
           'choices': [
             'The Hive',
             'None',
             'An empty Place'
           ],
           'hidden': False,
-          'locked': True,
-          'question': 'What is the entrance of the first Place in a tunnel (i.e. where do the bees enter from)?'
+          'locked': False,
+          'question': 'What is the entrance of the first Place in a tunnel?'
         },
         {
-          'answer': '1882785a9fe9c470b73929020d057fda',
-          'choices': [
-            'by calling the is_hive method on the place instance',
-            'by checking the bees attribute of the place instance',
-            'by checking the ant attribute of the place instance'
-          ],
-          'hidden': False,
-          'locked': True,
-          'question': 'How can you determine is a given Place is the Hive?'
-        },
-        {
-          'answer': '044ef3c0c6fd739b6260fe6f6cae71dd',
+          'answer': 'None',
           'choices': [
             'None',
             'A random Bee in the Hive',
             'The closest Bee behind the ThrowerAnt'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'What should nearest_bee return if there is no Bee in front of the ThrowerAnt in the tunnel?'
         }
       ],
@@ -79,35 +68,29 @@ test = {
         {
           'code': r"""
           >>> # Testing nearest_bee
-          >>> near_bee = Bee(2) # A Bee with 2 health
-          >>> far_bee = Bee(3)  # A Bee with 3 health
+          >>> near_bee = Bee(2) # A Bee with 2 armor
+          >>> far_bee = Bee(3)  # A Bee with 3 armor
           >>> near_place = gamestate.places['tunnel_0_3']
           >>> far_place = gamestate.places['tunnel_0_6']
           >>> near_place.add_insect(near_bee)
           >>> far_place.add_insect(far_bee)
           >>> nearest_bee = thrower.nearest_bee(gamestate.beehive)
           >>> thrower.nearest_bee(gamestate.beehive) is far_bee
-          03456a09f22295a39ca84d133a26f63d
-          # locked
+          False
           >>> thrower.nearest_bee(gamestate.beehive) is near_bee
-          c7a88a0ffd3aef026b98eef6e7557da3
-          # locked
-          >>> nearest_bee.health
-          20d533d3e06345c8bd7072212867f2d1
-          # locked
+          True
+          >>> nearest_bee.armor
+          2
           >>> thrower.action(gamestate)    # Attack! ThrowerAnts do 1 damage
-          >>> near_bee.health
-          d89cf7c79d5a479b0f636734143ed5e6
-          # locked
-          >>> far_bee.health
-          81a7d27d1a4a958871bb97b545b871db
-          # locked
+          >>> near_bee.armor
+          1
+          >>> far_bee.armor
+          3
           >>> thrower.place is ant_place    # Don't change self.place!
-          c7a88a0ffd3aef026b98eef6e7557da3
-          # locked
+          True
           """,
           'hidden': False,
-          'locked': True
+          'locked': False
         },
         {
           'code': r"""
@@ -118,7 +101,7 @@ test = {
           >>> thrower.nearest_bee(beehive) is bee
           False
           >>> thrower.action(gamestate)    # Attempt to attack
-          >>> bee.health                 # Bee health should not change
+          >>> bee.armor                 # Bee armor should not change
           2
           """,
           'hidden': False,
@@ -132,7 +115,7 @@ test = {
           >>> thrower.nearest_bee(gamestate.beehive) is near_bee
           True
           >>> thrower.action(gamestate)   # Attack!
-          >>> near_bee.health           # should do 1 damage
+          >>> near_bee.armor           # should do 1 damage
           1
           """,
           'hidden': False,
@@ -146,7 +129,7 @@ test = {
           >>> thrower.nearest_bee(gamestate.beehive) is near_bee
           True
           >>> thrower.action(gamestate)   # Attack!
-          >>> near_bee.health           # should do 1 damage
+          >>> near_bee.armor           # should do 1 damage
           1
           """,
           'hidden': False,
@@ -160,7 +143,7 @@ test = {
           >>> thrower.nearest_bee(gamestate.beehive) is near_bee
           True
           >>> thrower.action(gamestate)   # Attack!
-          >>> near_bee.health           # should do 1 damage
+          >>> near_bee.armor           # should do 1 damage
           1
           """,
           'hidden': False,
@@ -180,17 +163,8 @@ test = {
           >>> # Test if damage to bee1 is within 6 standard deviations (~95 damage)
           >>> # If bees are chosen uniformly, this is true 99.9999998% of the time.
           >>> def dmg_within_tolerance():
-          ...     return abs(bee1.health-501) < 95
+          ...     return abs(bee1.armor-501) < 95
           >>> dmg_within_tolerance()
-          True
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> from ants import *
-          >>> ThrowerAnt.implemented
           True
           """,
           'hidden': False,
@@ -208,6 +182,23 @@ test = {
       >>> ant_place.add_insect(thrower)
       >>> #
       """,
+      'teardown': '',
+      'type': 'doctest'
+    },
+    {
+      'cases': [
+        {
+          'code': r"""
+          >>> from ants import *
+          >>> ThrowerAnt.implemented
+          True
+          """,
+          'hidden': False,
+          'locked': False
+        }
+      ],
+      'scored': True,
+      'setup': '',
       'teardown': '',
       'type': 'doctest'
     }

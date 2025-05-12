@@ -10,7 +10,7 @@ except Exception as e:
 
 FRAME_TIME = 1/30
 
-class Canvas:
+class Canvas(object):
     """A Canvas object supports drawing and animation primitives.
 
     draw_* methods return the id number of a shape object in the underlying Tk
